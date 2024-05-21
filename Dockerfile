@@ -14,7 +14,11 @@ RUN apt-get update && \
 
 RUN rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/nekobean/mahjong-cpp.git
-RUN chmod +x /mahjong-cpp/bin/server
+#RUN chmod +x /mahjong-cpp/bin/server
+RUN mkdir /mahjong-cpp/build
+WORKDIR /mahjong-cpp/build
+RUN cmake ..
+RUN make -j$(nproc)
 
 EXPOSE 8888
-CMD /mahjong-cpp/bin/server
+CMD /mahjong-cpp/build/src/server/server
