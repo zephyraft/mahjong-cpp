@@ -12,12 +12,9 @@ RUN apt-get update && \
     git \
     libboost-all-dev
 
-# Install SSH server
-RUN apt-get install -y --no-install-recommends openssh-server && \
-    echo "root:root" | chpasswd && \
-    sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/" /etc/ssh/sshd_config
-
 RUN rm -rf /var/lib/apt/lists/*
+RUN git clone https://github.com/nekobean/mahjong-cpp.git
+RUN chmod +x /mahjong-cpp/bin/server
 
-EXPOSE 22
-CMD service ssh start && /bin/bash
+EXPOSE 8888
+CMD /mahjong-cpp/bin/server
